@@ -43,10 +43,14 @@
         border: 1px solid #FFFFFF22;
     }
 
+    .conditions {
+        padding: 0.5em;
+    }
+
     .condition {
         display: flex;
         flex-direction: column;
-        padding-top: 1em
+
     }
 
     .playerInventory {
@@ -56,7 +60,7 @@
 
     .equipment {
         background: #000d3866;
-        margin: 1em;
+        margin: 1em 0;
         border-radius: 6px;
         overflow: hidden;
         padding: 0.5em
@@ -137,7 +141,7 @@
             {{ title }} <a v-bind:href="downloadURL">Download</a>
         </div>
         <div class="editor">
-            <div>
+            <div class="conditions">
                 <div v-for="condition in startConditions" class="condition">
                     <div>
                         <input v-model="condition.key" />
