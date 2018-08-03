@@ -1,0 +1,163 @@
+<html>
+
+<head>
+    <title>Space Suit</title>
+</head>
+<style>
+    body {
+        background: #333;
+        color: #FFFFFFAA;
+        font-family: sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    a {
+        color: #AAAAFF;
+    }
+
+    #app .editor {
+        display: flex;
+    }
+    .header {
+        font-weight: bold;
+        padding: 1em;
+        background: #4b4949;
+        border-bottom: 1px solid #5a5a5a;
+        display: flex;
+        justify-content: space-between;
+    }
+    .item-contents {
+        background: #222;
+        flex-grow: 1;
+    }
+
+    input {
+        background: #00000033;
+        border: 1px solid #FFFFFF1A;
+        color: #FFFFFFAA;
+        padding: 0.5em;
+    }
+
+    input:focus {
+        border: 1px solid #FFFFFF22;
+    }
+
+    .condition {
+        display: flex;
+        flex-direction: column;
+        padding-top: 1em
+    }
+
+    .playerInventory {
+        flex-direction: column;
+        display: flex;
+    }
+
+    .equipment {
+        background: #000d3866;
+        margin: 1em;
+        border-radius: 6px;
+        overflow: hidden;
+        padding: 0.5em
+    }
+    .equipment>div {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .head {
+        display: flex;
+    }
+
+    .head input {
+        flex-grow: 1;
+    }
+
+    .head {
+        background: #00000033;
+        padding: 0.5em;
+    }
+
+    .equipment>div>.head>input {
+        font-weight: bold;
+        font-size: 100%;
+        width: 300px;
+    }
+
+    .items {
+        display: flex;
+        flex-wrap: wrap;
+        flex-grow: 1;
+    }
+
+    .item {
+        align-self: baseline;
+        padding: 0.5em;
+        margin: 0.5em;
+        background: #00000033;
+    }
+
+    button {
+        border: none;
+        padding: 0.5em 1.5em;
+        border-radius: 3px;
+        color: #FFFFFFAA;
+        font-weight: bold;
+        text-transform: uppercase;
+        background: #00000033;
+        transition: all 100ms ease-out;
+        margin-left: 0.5em;
+    }
+
+    button:not(:disabled) {
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #00000044;
+        box-shadow: #00000044 0px 1px 2px;
+    }
+
+    button:focus {
+        background: #00000055;
+        box-shadow: #00000088 0px 1px 6px;
+    }
+
+    button:active {
+        background: #00000066;
+        box-shadow: #00000088 0px 1px 10px;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<body>
+    <div id="app">
+        <div class="header">
+            {{ title }} <a v-bind:href="downloadURL">Download</a>
+        </div>
+        <div class="editor">
+            <div>
+                <div v-for="condition in startConditions" class="condition">
+                    <div>
+                        <input v-model="condition.key" />
+                        <button @click="condition.playerInventory.push({prefabName:'', contents:[]})">Add Equipment</button>
+                    </div>
+                    <div class="playerInventory">
+                        <div v-for="inventoryData in condition.playerInventory" class="equipment">
+                            <item-view v-bind:item="inventoryData" v-bind:parent="condition.playerInventory" />
+                        </div>
+                    </div>
+                </div>
+                <button @click="startConditions.push({key:'', playerInventory:[]})">
+                    New Condition
+                </button>
+            </div>
+            <item-contents v-bind:item="openPath[openPath.length - 1]" />
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+
+</html>
