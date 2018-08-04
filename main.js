@@ -105,9 +105,16 @@ Vue.component('item-view', {
         }
     },
     template: `
-        <div>
-            <button@click="selectPath(item)">{{item.prefabName}}</button>
-            <button @click="parent.splice(parent.indexOf(item), 1)">X</button>
+        <div @click="selectPath(item)" class="item">
+            <div>{{item.prefabName}}</div>
+            <div>
+                {{item.slotId && "Slot: " + item.slotId}} {{item.type}}
+            </div>
+            <button
+                @click="parent.splice(parent.indexOf(item), 1)"
+                title="Delete Item">
+                X
+            </button>
         </div>
     `
 })
@@ -129,7 +136,7 @@ Vue.component('item-contents', {
                     <button @click="item.contents.push({prefabName:'', contents:[]})">+</button>
                 </div>
                 <div class="items" v-if="">
-                    <div v-for="child in item.contents" class="item">
+                    <div v-for="child in item.contents">
                         <item-view v-bind:item="child" v-bind:parent="item.contents"/>
                     </div>
                 </div>
