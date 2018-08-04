@@ -1,4 +1,4 @@
-class InventorySerializer {
+class StartConditionsSerializer {
     addText(node, text) {
         node.appendChild(this.doc.createTextNode(text))
     }
@@ -50,8 +50,47 @@ class InventorySerializer {
     }
 }
 
+class StartConditionsDeserializer {
+    getChild(node, cond) {
+        return Array.from(node.children).find(cond)
+    }
 
+    getChildByName(node, name) {
+        return Array.from(node.children).find(c => c.nodeName == name)
+    }
 
+    getNodeText(node, name) {
+        let c =  this.getChildByName(node, name)
+        if (c) { return c.textContent}
+        return null
+    }
+
+   deserializeInventoryData(node) {
+       let contents = this.getChildByName(node, "Contents")
+        return {
+            "node": node.nodeName,
+            "prefabName": this.getNodeText(node, "PrefabName"),
+            "type": this.getNodeText(node, "Type"),
+            "slotId": this.getNodeText(node, "SlotId"),
+            "stackSize": this.getNodeText(node, "StackSize"),
+            "contents": contents ? Array.from(contents.children)
+                                        .map(c => this.deserializeInventoryData(c)) : [],
+        }
+    }
+
+    deserializeStartingConditions(xmlstring) {
+        let parser = new DOMParser()
+        let parsed = parser.parseFromString(xmlstring, 'application/xml')
+        let startingConditions = parsed.getElementsByTagName("StartingConditions")[0].children
+        return Array.from(startingConditions).map(condition => {
+            return {
+                "key": this.getChildByName(condition, "Key").textContent,
+                "stringKey": this.getChildByName(condition, "StringKey").textContent,
+                "playerInventory": Array.from(this.getChildByName(condition, "PlayerInventory").children).map(c => this.deserializeInventoryData(c))
+            }
+        })
+    }
+}
 
 
 Vue.component('item-view', {
@@ -108,55 +147,15 @@ var app = new Vue({
     },
     computed: {
         downloadURL: function() {
-            let serializer = new InventorySerializer()
+            let serializer = new StartConditionsSerializer()
             return 'data:text/plain,'+encodeURIComponent(serializer.serializeConditions(this.startConditions))
         }
     }
 })
 
-function getChild(node, cond) {
-    return Array.from(node.children).find(cond)
-}
-
-function getChildByName(node, name) {
-    return Array.from(node.children).find(c => c.nodeName == name)
-}
-
-function getNodeText(node, name) {
-    c =  getChildByName(node, name)
-    if (c) { return c.textContent}
-    return null
-}
-
-
-function parseInventoryData(node) {
-    let contents = getChildByName(node, "Contents")
-    return {
-        "node": node.nodeName,
-        "prefabName": getNodeText(node, "PrefabName"),
-        "type": getNodeText(node, "Type"),
-        "slotId": getNodeText(node, "SlotId"),
-        "stackSize": getNodeText(node, "StackSize"),
-        "contents": contents ? Array.from(contents.children).map(parseInventoryData) : [],
-    }
-}
-
-function parseStartingConditions(xmlstring) {
-    let parsed = parser.parseFromString(xmlstring, 'application/xml')
-    let startingConditions = parsed.getElementsByTagName("StartingConditions")[0].children
-
-    return Array.from(startingConditions).map(condition => {
-        return {
-            "key": getChildByName(condition, "Key").textContent,
-            "stringKey": getChildByName(condition, "StringKey").textContent,
-            "playerInventory": Array.from(getChildByName(condition, "PlayerInventory").children).map(parseInventoryData)
-        }
-    })
-}
-
-let parser = new DOMParser()
 fetch('startconditions.xml').then(r => r.text()).then(text => {
-    app.startConditions = parseStartingConditions(text)
+    let deserializer = new StartConditionsDeserializer()
+    app.startConditions = deserializer.deserializeStartingConditions(text)
 })
 
 
