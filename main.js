@@ -143,7 +143,26 @@ var app = new Vue({
     data: {
         title: 'Start Condition Editor',
         startConditions: [],
-        openPath: []
+        openPath: [],
+        file: null,
+    },
+    methods: {
+        setConditions: function(c) {
+            this.startConditions = c
+            this.openPath = []
+        },
+        fileChanged: function(evt) {
+            if (evt.target.files.length === 1) {
+                let f = evt.target.files[0]
+                let r = new FileReader()
+                r.onload = () => {
+                    console.log("hi")
+                    let deserializer = new StartConditionsDeserializer()
+                    app.setConditions(deserializer.deserializeStartingConditions(r.result))
+                }
+                r.readAsText(f)
+            }
+        },
     },
     computed: {
         downloadURL: function() {
@@ -157,5 +176,4 @@ fetch('startconditions.xml').then(r => r.text()).then(text => {
     let deserializer = new StartConditionsDeserializer()
     app.startConditions = deserializer.deserializeStartingConditions(text)
 })
-
 

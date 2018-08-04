@@ -19,14 +19,21 @@
     #app .editor {
         display: flex;
     }
+
     .header {
         font-weight: bold;
-        padding: 1em;
+        padding: 0.5em;
         background: #4b4949;
         border-bottom: 1px solid #5a5a5a;
         display: flex;
         justify-content: space-between;
+        align-items: center;
     }
+
+    .header input {
+        margin-right: 0.5em;
+    }
+
     .item-contents {
         background: #222;
         flex-grow: 1;
@@ -45,6 +52,7 @@
 
     .conditions {
         padding: 0.5em;
+        min-width: 320px
     }
 
     .condition {
@@ -65,6 +73,7 @@
         overflow: hidden;
         padding: 0.5em
     }
+
     .equipment>div {
         display: flex;
         justify-content: space-between;
@@ -138,7 +147,11 @@
 <body>
     <div id="app">
         <div class="header">
-            {{ title }} <a v-bind:href="downloadURL">Download</a>
+            {{ title }}
+            <div>
+                <input type="file" @change="fileChanged"></input>
+                <a v-bind:href="downloadURL" download="startconditions.xml">Download</a>
+            </div>
         </div>
         <div class="editor">
             <div class="conditions">
