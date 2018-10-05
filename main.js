@@ -94,10 +94,13 @@ class StartConditionsDeserializer {
 
 
 Vue.component('item-view', {
-    props: ["item", "parent"],
+    props: ["item", "parent", "root"],
     methods: {
         selectPath(item) {
-            if (app.openPath[app.openPath.length -1] == item) {
+            if (this.root) {
+                app.openPath.length = 0
+                app.openPath.push(item)
+            } else if (app.openPath[app.openPath.length -1] == item) {
                 app.openPath.pop()
             } else {
                 app.openPath.push(item)

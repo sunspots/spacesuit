@@ -165,7 +165,7 @@
                     </div>
                     <div class="playerInventory">
                         <div v-for="inventoryData in condition.playerInventory" class="equipment">
-                            <item-view v-bind:item="inventoryData" v-bind:parent="condition.playerInventory" />
+                            <item-view v-bind:item="inventoryData" v-bind:parent="condition.playerInventory" v-bind:root="true" />
                         </div>
                     </div>
                 </div>
