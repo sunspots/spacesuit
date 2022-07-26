@@ -65,7 +65,7 @@
     }
 
     input:focus {
-        border: 1px solid #FFFFFF22;
+        border: 1px solid #FFF3;
     }
 
     .conditions {
@@ -81,6 +81,10 @@
         flex-direction: column;
     }
 
+    .condition-header button {
+        margin: 0.5em 0;
+    }
+
     .playerInventory {
         flex-direction: column;
         display: flex;
@@ -89,6 +93,11 @@
     .equipment>.item {
         background: #000d3866;
     }
+
+    .equipment>.item:hover {
+        background: #04114266;
+    }
+
     .head {
         display: flex;
     }
@@ -116,6 +125,10 @@
         border-radius: 6px;
     }
 
+    .item:hover {
+        background: #07070733;
+    }
+
     button {
         border: none;
         padding: 0.5em 1.5em;
@@ -133,17 +146,17 @@
     }
 
     button:hover {
-        background: #00000044;
+        background: #6969691a;
         box-shadow: #00000044 0px 1px 2px;
     }
 
     button:focus {
-        background: #00000055;
+        background: #6969691a;
         box-shadow: #00000088 0px 1px 6px;
     }
 
     button:active {
-        background: #00000066;
+        background: #72727233;
         box-shadow: #00000088 0px 1px 10px;
     }
 </style>
