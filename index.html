@@ -1,198 +1,212 @@
 <!DOCTYPE html>
 
 <html>
-
-<head>
+  <head>
     <title>Space Suit</title>
-</head>
-<style>
+  </head>
+  <style>
     body {
-        background: #333;
-        color: #FFFFFFAA;
-        font-family: sans-serif;
-        margin: 0;
-        padding: 0;
+      background: #333;
+      color: #ffffffaa;
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
     }
 
     a {
-        color: #AAAAFF;
+      color: #aaaaff;
     }
 
     #app .editor {
-        display: flex;
+      display: flex;
     }
 
     .header {
-        font-weight: bold;
-        padding: 0.5em;
-        background: #4b4949;
-        border-bottom: 1px solid #5a5a5a;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+      font-weight: bold;
+      padding: 0.5em;
+      background: #4b4949;
+      border-bottom: 1px solid #5a5a5a;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .header input {
-        margin-right: 0.5em;
+      margin-right: 0.5em;
     }
 
     .item-contents {
-        background: #222;
-        flex-grow: 1;
+      background: #222;
+      flex-grow: 1;
     }
+
     .item {
-        width: 150px;
-        height: 100px;
-        word-break: break-all;
-        position: relative;
-        cursor: pointer;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+      width: 150px;
+      height: 100px;
+      word-break: break-all;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
+
     .item button {
-        position: absolute;
-        bottom: 5px;
-        right: 5px;
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
     }
 
     input {
-        background: #00000033;
-        border: 1px solid #FFFFFF1A;
-        color: #FFFFFFAA;
-        padding: 0.5em;
+      background: #00000033;
+      border: 1px solid #ffffff1a;
+      color: #ffffffaa;
+      padding: 0.5em;
     }
 
     input:focus {
-        border: 1px solid #FFF3;
+      border: 1px solid #fff3;
     }
 
     .conditions {
-        padding: 0.5em;
+      padding: 0.5em;
     }
 
     .condition {
-        display: flex;
-        flex-direction: column;
+      display: flex;
+      flex-direction: column;
     }
+
     .condition-header {
-        display: flex;
-        flex-direction: column;
+      display: flex;
+      flex-direction: column;
     }
 
     .condition-header button {
-        margin: 0.5em 0;
+      margin: 0.5em 0;
     }
 
     .playerInventory {
-        flex-direction: column;
-        display: flex;
+      flex-direction: column;
+      display: flex;
     }
 
-    .equipment>.item {
-        background: #000d3866;
+    .equipment > .item {
+      background: #000d3866;
     }
 
-    .equipment>.item:hover {
-        background: #04114266;
+    .equipment > .item:hover {
+      background: #04114266;
     }
 
     .head {
-        display: flex;
+      display: flex;
     }
 
     .head input {
-        flex-grow: 1;
+      flex-grow: 1;
     }
 
     .head {
-        background: #00000033;
-        padding: 0.5em;
+      background: #00000033;
+      padding: 0.5em;
     }
 
     .items {
-        display: flex;
-        flex-wrap: wrap;
-        flex-grow: 1;
+      display: flex;
+      flex-wrap: wrap;
+      flex-grow: 1;
     }
 
     .item {
-        align-self: baseline;
-        padding: 0.5em;
-        margin: 0.5em;
-        background: #00000033;
-        border-radius: 6px;
+      align-self: baseline;
+      padding: 0.5em;
+      margin: 0.5em;
+      background: #00000033;
+      border-radius: 6px;
     }
 
     .item:hover {
-        background: #07070733;
+      background: #07070733;
     }
 
     button {
-        border: none;
-        padding: 0.5em 1.5em;
-        border-radius: 3px;
-        color: #FFFFFFAA;
-        font-weight: bold;
-        text-transform: uppercase;
-        background: #00000033;
-        transition: all 100ms ease-out;
-        margin-left: 0.5em;
+      border: none;
+      padding: 0.5em 1.5em;
+      border-radius: 3px;
+      color: #ffffffaa;
+      font-weight: bold;
+      text-transform: uppercase;
+      background: #00000033;
+      transition: all 100ms ease-out;
+      margin-left: 0.5em;
     }
 
     button:not(:disabled) {
-        cursor: pointer;
+      cursor: pointer;
     }
 
     button:hover {
-        background: #6969691a;
-        box-shadow: #00000044 0px 1px 2px;
+      background: #6969691a;
+      box-shadow: #00000044 0px 1px 2px;
     }
 
     button:focus {
-        background: #6969691a;
-        box-shadow: #00000088 0px 1px 6px;
+      background: #6969691a;
+      box-shadow: #00000088 0px 1px 6px;
     }
 
     button:active {
-        background: #72727233;
-        box-shadow: #00000088 0px 1px 10px;
+      background: #72727233;
+      box-shadow: #00000088 0px 1px 10px;
     }
-</style>
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
-<body>
+  <body>
     <div id="app">
-        <div class="header">
-            {{ title }}
-            <div>
-                <input type="file" @change="fileChanged"></input>
-                <a v-bind:href="downloadURL" download="startconditions.xml">Download</a>
-            </div>
+      <div class="header">
+        {{ title }}
+        <div>
+          <input type="file" @change="fileChanged" />
+          <a v-bind:href="downloadURL" download="startconditions.xml"
+            >Download</a
+          >
         </div>
-        <div class="editor">
-            <div class="conditions">
-                <div v-for="condition in startConditions" class="condition">
-                    <div class="condition-header">
-                        <input v-model="condition.key" />
-                        <button @click="condition.playerInventory.push({prefabName:'', contents:[]})">Add Equipment</button>
-                    </div>
-                    <div class="playerInventory">
-                        <div v-for="inventoryData in condition.playerInventory" class="equipment">
-                            <item-view v-bind:item="inventoryData" v-bind:parent="condition.playerInventory" v-bind:root="true" />
-                        </div>
-                    </div>
-                </div>
-                <button @click="startConditions.push({key:'', playerInventory:[]})">
-                    New Condition
-                </button>
+      </div>
+      <div class="editor">
+        <div class="conditions">
+          <div v-for="condition in startConditions" class="condition">
+            <div class="condition-header">
+              <input v-model="condition.key" />
+              <button
+                @click="condition.playerInventory.push({prefabName:'', contents:[]})"
+              >
+                Add Equipment
+              </button>
             </div>
-            <item-contents v-bind:item="openPath[openPath.length - 1]" />
+            <div class="playerInventory">
+              <div
+                v-for="inventoryData in condition.playerInventory"
+                class="equipment"
+              >
+                <item-view
+                  v-bind:item="inventoryData"
+                  v-bind:parent="condition.playerInventory"
+                  v-bind:root="true"
+                />
+              </div>
+            </div>
+          </div>
+          <button @click="startConditions.push({key:'', playerInventory:[]})">
+            New Condition
+          </button>
         </div>
+        <item-contents v-bind:item="openPath[openPath.length - 1]" />
+      </div>
     </div>
 
     <script src="main.js"></script>
-</body>
-
+  </body>
 </html>
